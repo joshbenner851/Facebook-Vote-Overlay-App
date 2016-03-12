@@ -25,9 +25,9 @@
       // Logged into your app and Facebook.
       //window.location.replace("fb-callback.php");
       testAPI();
-      testPic();
-      //checkAlbum();
-      //uploadAlbum();
+      var url = testPic();
+      checkAlbum();
+      uploadAlbum(url);
   } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -51,7 +51,7 @@
 
   window.fbAsyncInit = function() {
   	FB.init({
-  		appId      : '970982232977864',
+  		appId      : '970957542980333',
     cookie     : true,  // enable cookies to allow the server to access 
                         // the session
     xfbml      : true,  // parse social plugins on this page
@@ -106,18 +106,18 @@
   	});
   }
 
-  function uploadAlbum(){
+  function uploadAlbum(url){
   	FB.api(
   		"/me/albums", 'post', {name: "political", privacy: {value: "SELF"}}, 
   		function(response){
   			console.log("Updated album");
   			console.log(response);
-  			uploadPic(response.id);
+  			uploadPic(response.id,url);
   		});
   }
 
-  function uploadPic(albumID){
-  	FB.api('/'+albumID+'/photos', 'post', {url: "https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xft1/t31.0-8/12841225_1143317065687277_2479885209206228697_o.jpg"},
+  function uploadPic(albumID,url){
+  	FB.api('/'+albumID+'/photos', 'post', {url: url},
   		function (response){
   			console.log(response);
   			redirectProfilePic(albumID, response.id);
@@ -133,14 +133,30 @@
   	FB.api(
   		"/me/picture?width=500&height=500",
   		function (response) {
-  			if (response && !response.error) {
-  				var data = response.data;
-  				console.log(response.data);
-  				$('#profPic').attr('src', data.url);
-  			}
-  		}
-  		);
-  }
+			if (response && !response.error) {
+				var data = response.data;
+				console.log(response.data);
+				$('#profPic').attr('src', data.url);
+				var canvas = document.getElementById("canvas");
+				var ctx = canvas.getContext("2d");
+				var img = document.getElementById("profPic");
+				//$('#filter').css("opacity",".4");
+				var filter = document.getElementById("filter");
+				filter.style.opacity = ".5";
+				ctx.drawImage(img, 10, 10);
+				ctx.drawImage(filter,40,20);
+				ctx.font = "40px Arial";
+				ctx.fillStyle = "#fff";
+				ctx.fillText("I voted! If you didn't vote I will personally", 30, 200);
+				ctx.fillText("blame you if Trump becomes president", 30, 300);
+				$('#profPic').css("display","none");
+				$('#filter').css("margin-left","-999em");
+				$('#profPic').attr('src', canvas.toDataURL());
+				console.log(canvas.toDataURL().toString());
+				return canvas.toDataURL().toString();
+			}
+		});
+	}
 
 
   function login(){
@@ -175,7 +191,8 @@
 </div>
 
 <div class="center">
-	<img id="profPic" src="">
+	<img id="profPic" src="" >
+	<canvas id="canvas" width="600" height="600"></canvas>
 </div>
 
 <div class="center">
@@ -183,6 +200,7 @@
 	<input type="button" onclick="login();" value="login">
 	<input type="button" onclick="logout();" value="logout">
 </div>
+<img id="filter" src="12047659_10209208455187216_73273559_n.jpg">
 
 <!--Import jQuery before materialize.js-->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
