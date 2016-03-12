@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>temp</title>
-	<?php require_once __DIR__ . '/vendor/autoload.php'; ?>
 	<!--Import Google Icon Font-->
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<!--Import materialize.css-->
@@ -27,7 +26,7 @@
       //window.location.replace("fb-callback.php");
       testAPI();
       testPic();
-      checkAlbum();
+      //checkAlbum();
       //uploadAlbum();
   } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
@@ -137,7 +136,7 @@
   			if (response && !response.error) {
   				var data = response.data;
   				console.log(response.data);
-  				$('#profPic').attr('img', data.url);
+  				$('#profPic').attr('src', data.url);
   			}
   		}
   		);
@@ -175,7 +174,9 @@
 <div id="status">
 </div>
 
-<img id="profPic" src="">
+<div class="center">
+	<img id="profPic" src="">
+</div>
 
 <div class="center">
 	<h2>Logout/in Area</h2>
