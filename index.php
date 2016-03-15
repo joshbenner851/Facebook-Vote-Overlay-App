@@ -11,7 +11,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-	<?php //include_once 'login.php'; ?>
 	<script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -26,8 +25,7 @@
       //window.location.replace("fb-callback.php");
       testAPI();
       testPic();
-      //checkAlbum();
-      //uploadAlbum();
+      checkAlbum();
   } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -117,7 +115,7 @@
   }
 
   function uploadPic(albumID){
-  	FB.api('/'+albumID+'/photos', 'post', {url: "https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xft1/t31.0-8/12841225_1143317065687277_2479885209206228697_o.jpg"},
+  	FB.api('/'+albumID+'/photos', 'post', {message: 'Created with www.politicfilter.com and Josh Benner', url: "https://scontent-hkg3-1.xx.fbcdn.net/hphotos-xft1/t31.0-8/12841225_1143317065687277_2479885209206228697_o.jpg"},
   		function (response){
   			console.log(response);
   			redirectProfilePic(albumID, response.id);
@@ -126,7 +124,7 @@
 
 
   function redirectProfilePic(albumID, photoID){
-  	window.location.replace("http://www.facebook.com/photo.php?fbid="+photoID+"&makeprofile=1");
+  	window.location.href = "http://www.facebook.com/photo.php?fbid="+photoID+"&makeprofile=1";
   }
 
   function testPic(){
