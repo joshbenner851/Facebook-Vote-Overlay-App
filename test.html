@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div id="promoNode"></div>
+        <p>The images below include the original image (jpg), the canvas version,
+            and a conversion from canvas to PNG.</p>
+        <h2>Original Image</h2>
+        <p>
+            <img style="background:url(profilepic.jpg) no-repeat; background-position: -300px -100px"  src="Filters/VoteShamer-Filter-Trump.png" id="ringoImage" />
+        </p>
+
+        <h2>Canvas Image</h2>
+        <p id="canvasHolder"></p>
+        <h2>Canvas -&gt; PNG Image</h2>
+        <p id="pngHolder"></p>
+
+    </div>
+
+    <script>
+        wo = window.onload;
+        window.onload = function() {
+            wo && wo.call(null);
+
+            // Get the image
+            var sampleImage = document.getElementById("ringoImage"),
+                    canvas = convertImageToCanvas(sampleImage);
+
+            // Actions
+            document.getElementById("canvasHolder").appendChild(canvas);
+            document.getElementById("pngHolder").appendChild(convertCanvasToImage(canvas));
+
+            // Converts image to canvas; returns new canvas element
+            function convertImageToCanvas(image) {
+                var canvas = document.createElement("canvas");
+                canvas.width = image.width;
+                canvas.height = image.height;
+                canvas.getContext("2d").drawImage(image, 0, 0);
+                return canvas;
+            }
+
+            // Converts canvas to an image
+            function convertCanvasToImage(canvas) {
+                var image = new Image();
+                image.src = canvas.toDataURL("image/png");
+                return image;
+            }
+        };
+    </script>
+    <!--<script>-->
+        <!--var canvas = document.getElementById("canvas");-->
+        <!--var ctx = canvas.getContext("2d");-->
+        <!--//$('#filter').css("opacity",".4");-->
+        <!--var filter = document.getElementById("filter");-->
+        <!--filter.style.opacity = ".5";-->
+        <!--ctx.drawImage(filter,40,20);-->
+        <!--ctx.font = "40px Arial";-->
+        <!--ctx.fillStyle = "#fff";-->
+        <!--ctx.fillText("I voted! If you didn't vote I will personally", 30, 200);-->
+        <!--ctx.fillText("blame you if Trump becomes president", 30, 300);-->
+        <!--$('#filter').css("margin-left","-999em");-->
+        <!---->
+        <!--console.log("trying to image" ,canvas.toDataURL().toString("image/png"));-->
+    <!--</script>-->
+</body>
+</html>
